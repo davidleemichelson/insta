@@ -17,8 +17,6 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     var isMoreDataLoading = false
     var loadingMoreView: InfiniteScrollActivityView?
     
-    
-    
     @IBAction func onLogOut(sender: AnyObject) {
         PFUser.logOutInBackgroundWithBlock { (error: NSError?) -> Void in
             if let error = error {
@@ -28,11 +26,11 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
                 print("Logout successful")
                 self.performSegueWithIdentifier("logoutSegue", sender: nil)
             }
-
+            
         }
-
+        
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
@@ -161,19 +159,21 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let cell = sender as! InstagramPostTableViewCell
-        let indexPath = tableView.indexPathForCell(cell)
-        let post = posts![indexPath!.row]
+        if let cell = sender as? InstagramPostTableViewCell {
+            let indexPath = tableView.indexPathForCell(cell)
+            let post = posts![indexPath!.row]
         
-        let detailViewController = segue.destinationViewController as! DetailViewController
-        detailViewController.post = post
+            let detailViewController = segue.destinationViewController as! DetailViewController
+            detailViewController.post = post
         
         
-        print("prepare for segue")
+            print("prepare for segue")
         
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-    }
-    
+        } else {
+            print("error")
+        }
 
+    }
 }
