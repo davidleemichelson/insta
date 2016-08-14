@@ -7,15 +7,29 @@
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var storyboard : UIStoryboard?;
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        Parse.initializeWithConfiguration(
+            ParseClientConfiguration(block: { (configuration:ParseMutableClientConfiguration) -> Void in
+                configuration.applicationId = "Instagram"
+                configuration.clientKey = "02q94efhwioadsjknl"
+                configuration.server = "http://damp-reaches-43702.herokuapp.com/parse"
+            })
+        )
+        self.storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle());
+        if PFUser.currentUser() != nil {
+            self.window?.rootViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TabBarController");
+
+        }
         return true
     }
 
